@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Valo Squad 𝖁𝖆𝖑𝖔 𝕾𝖖𝖚𝖆𝖉 (ㆆᴗㆆ)</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:radial-gradient(circle,#0f1923,#05080c);
+color:white;
+margin:0;
+text-align:center;
+}
+
+nav{
+background:#b3f3c6;
+padding:15px;
+box-shadow:0 0 15px #b3f3c6;
+}
+
+nav button{
+background:white;
+border:none;
+padding:10px 20px;
+margin:5px;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+border-radius:6px;
+}
+
+nav button:hover{
+background:#0f1923;
+color:white;
+}
+
+.page{
+display:none;
+padding:30px;
+}
+
+.active{
+display:block;
+}
+
+.card{
+background:#1a2733;
+border-radius:12px;
+padding:15px;
+margin:15px;
+width:220px;
+display:inline-block;
+box-shadow:0 0 15px #b3f3c6(255,70,85,0.5);
+transition:0.3s;
+}
+
+.card:hover{
+transform:scale(1.07);
+box-shadow:0 0 20px #b3f3c6;
+}
+
+.card img{
+width:100%;
+border-radius:10px;
+}
+
+input,select{
+padding:8px;
+margin:5px;
+border-radius:5px;
+border:none;
+}
+
+button.action{
+padding:10px 20px;
+border:none;
+background:#b3f3c6;
+color:white;
+cursor:pointer;
+margin:10px;
+border-radius:6px;
+}
+
+.slider{
+width:300px;
+}
+
+.team{
+display:inline-block;
+width:40%;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+<button onclick="showPage('meter')">Valo-mètre</button>
+<button onclick="showPage('squad')">Squad</button>
+<button onclick="showPage('team')">Teams</button>
+</nav>
+
+<!-- VALO METRE -->
+
+<div id="meter" class="page active">
+
+<h1>VALO-MÈTRE 🎯</h1>
+
+<input type="range" min="0" max="100" value="50" class="slider" id="slider">
+
+<h2 id="result">👍 Jouable</h2>
+
+</div>
+
+<!-- SQUAD -->
+
+<div id="squad" class="page">
+
+<h1>Ajouter un joueur</h1>
+
+<input id="name" placeholder="Pseudo">
+
+<select id="agent">
+<option value="jett">Jett</option>
+<option value="reyna">Reyna</option>
+<option value="sage">Sage</option>
+<option value="sova">Sova</option>
+<option value="omen">Omen</option>
+<option value="raze">Raze</option>
+<option value="gekko">Gekko</option>
+<option value="astra">Astra</option>
+<option value="breach">Breach</option>
+<option value="bimstone">Brimstone</option>
+<option value="chamber">Chamber</option>
+<option value="clove">Clove</option>
+<option value="cypher">cypher</option>
+<option value="deadlock">Deadlock</option>
+<option value="fade">Fade</option>
+<option value="harbor">Harbor</option>
+<option value="iso">Iso</option>
+<option value="kay/o">Kay/o</option>
+<option value="neon">Neon</option>
+<option value="phoenix">Phoenix</option>
+<option value="skye">Skye</option>
+<option value="tejo">Tejo</option>
+<option value="veto">Veto</option>
+<option value="viper">Viper</option>
+<option value="vyse">Vyse</option>
+<option value="waylay">Waylay</option>
+<option value="yoru">Yoru</option>
+</select>
+
+<select id="rank">
+<option>Plastic</option>
+<option>Iron</option>
+<option>Bronze</option>
+<option>Silver</option>
+<option>Gold</option>
+<option>Platinum</option>
+<option>Diamond</option>
+<option>Ascendant</option>
+<option>Immortal</option>
+<option>Radiant</option>
+</select>
+
+<br>
+
+<button class="action" onclick="addPlayer()">Ajouter</button>
+
+<h2>Squad</h2>
+
+<div id="players"></div>
+
+</div>
+
+<!-- TEAM MAKER -->
+
+<div id="team" class="page">
+
+<h1>Team Maker 🎲</h1>
+
+<button class="action" onclick="makeTeams()">Créer les équipes</button>
+
+<div class="team">
+<h2>Team 1</h2>
+<div id="team1"></div>
+</div>
+
+<div class="team">
+<h2>Team 2</h2>
+<div id="team2"></div>
+</div>
+
+</div>
+
+<script>
+
+function showPage(page){
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
+document.getElementById(page).classList.add("active")
+}
+
+let slider=document.getElementById("slider")
+let result=document.getElementById("result")
+
+slider.oninput=function(){
+
+let v=slider.value
+
+if(v<20) result.innerHTML="💀 Flemme"
+else if(v<50) result.innerHTML="😬 Je sais pas"
+else if(v<80) result.innerHTML="👍 Allez"
+else result.innerHTML="🔥 Vamos"
+
+}
+
+let players=[]
+
+const agentImages={
+jett:"https://media.valorant-api.com/agents/add6443a-41bd-e414-f6ad-e58d267f4e95/displayicon.png",
+reyna:"https://media.valorant-api.com/agents/a3bfb853-43b2-7238-a4f1-ad90e9e46bcc/displayicon.png",
+sage:"https://media.valorant-api.com/agents/569fdd95-4d10-43ab-ca70-79becc718b46/displayicon.png",
+sova:"https://media.valorant-api.com/agents/320b2a48-4d9b-a075-30f1-1f93a9b638fa/displayicon.png",
+omen:"https://media.valorant-api.com/agents/8e253930-4c05-31dd-1b6c-968525494517/displayicon.png",
+raze:"https://media.valorant-api.com/agents/f94c3b30-42be-e959-889c-5aa313dba261/displayicon.png"
+astra:"https://cmsassets.rgpub.io/sanity/images/dsfx7636/news/ba51d43803082941b0274b66413b0acc972546dd-616x822.png?accountingTag=VAL&auto=format&fit=fill&q=80&w=350"
+
+
+
+}
+
+function addPlayer(){
+
+let name=document.getElementById("name").value
+let agent=document.getElementById("agent").value
+let rank=document.getElementById("rank").value
+
+let player={name,agent,rank}
+
+players.push(player)
+
+displayPlayers()
+
+}
+
+function displayPlayers(){
+
+let div=document.getElementById("players")
+div.innerHTML=""
+
+players.forEach(p=>{
+
+let card=document.createElement("div")
+card.className="card"
+
+card.innerHTML=
+"<img src='"+agentImages[p.agent]+"'>"+
+"<h3>"+p.name+"</h3>"+
+"Agent : "+p.agent+"<br>"+
+"Rank : "+p.rank
+
+div.appendChild(card)
+
+})
+
+}
+
+function makeTeams(){
+
+let shuffled=[...players].sort(()=>0.5-Math.random())
+
+let team1=document.getElementById("team1")
+let team2=document.getElementById("team2")
+
+team1.innerHTML=""
+team2.innerHTML=""
+
+shuffled.forEach((p,i)=>{
+
+let card=document.createElement("div")
+card.className="card"
+card.innerHTML="<h3>"+p.name+"</h3>"
+
+if(i%2==0) team1.appendChild(card)
+else team2.appendChild(card)
+
+})
+
+}
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+const socket = io();
+
+socket.on("update", (data) = {
+  console.log("Modification reçue :", data)
+document.getElementById("texte").innerText = data;
+});
+
+function modifier() {
+  const valeur = document.getElementById("input").value;
+  socket.emit("modifier", valeur);
+}
+</script>
+
+
+</body>
+</html>

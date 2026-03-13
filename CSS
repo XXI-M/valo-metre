@@ -1,0 +1,15 @@
+body{
+font-family:Arial;
+margin:0;
+color:white;
+text-align:center;
+background:linear-gradient(-45deg,#83809D,#808B9D,#809A9D,#83809D);
+background-size:400% 400%;
+animation:bgMove 12s infinite;
+}
+
+@keyframes bgMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
